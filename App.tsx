@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -10,47 +10,16 @@ import { Provider } from 'react-redux';
 import { CartProvider } from './src/context/CartContext';
 import { setOnUnauthorizedCallback } from './src/services/api';
 import { storage } from './src/services/storage';
+import { userService } from './src/services/userService';
 import { usePushNotifications } from './src/hooks/usePushNotifications';
 import AppNavigator, { navigationRef } from './src/navigation/AppNavigator';
 import SplashScreen from './src/app/SplashScreen';
 import MainNavigation from './src/navigation/MainNavigator';
 import { store } from './src/store';
+import { useAppSelector } from './src/store/hooks';
+import { logoutUser } from './src/store/slices/authSlice';
 
-// Screenshot prevention - wrapped safely due to RN 0.84 New Architecture incompatibility
-const safeScreenshotPrevent = {
-    enable: () => {
-        try {
-            const { enabled } = require('react-native-screenshot-prevent');
-            if (typeof enabled === 'function') enabled(true);
-        } catch (e) {
-            console.warn('RNScreenshotPrevent: enable failed', e);
-        }
-    },
-    disable: () => {
-        try {
-            const { enabled } = require('react-native-screenshot-prevent');
-            if (typeof enabled === 'function') enabled(false);
-        } catch (e) {
-            console.warn('RNScreenshotPrevent: disable failed', e);
-        }
-    },
-    enableSecureView: () => {
-        try {
-            const { enableSecureView } = require('react-native-screenshot-prevent');
-            if (typeof enableSecureView === 'function') enableSecureView();
-        } catch (e) {
-            console.warn('RNScreenshotPrevent: enableSecureView failed', e);
-        }
-    },
-    disableSecureView: () => {
-        try {
-            const { disableSecureView } = require('react-native-screenshot-prevent');
-            if (typeof disableSecureView === 'function') disableSecureView();
-        } catch (e) {
-            console.warn('RNScreenshotPrevent: disableSecureView failed', e);
-        }
-    },
-};
+
 
 function ErrorFallback({ resetErrorBoundary }: any) {
     const handleReset = async () => {
@@ -79,35 +48,41 @@ function ErrorFallback({ resetErrorBoundary }: any) {
 }
 
 function AppContent() {
+    usePushNotifications();
+
+    const token = useAppSelector((state) => state.auth.token);
+    const prevTokenRef = useRef<string | null | undefined>(undefined);
 
     useEffect(() => {
-        if (Platform.OS === 'android') {
-            safeScreenshotPrevent.enable();
+        if (Platform.OS === 'ios' && !__DEV__) {
+            try {
+                const { enableSecureView } = require('react-native-screenshot-prevent');
+                if (typeof enableSecureView === 'function') enableSecureView();
+            } catch (e) { /* ignore on unsupported RN versions */ }
         }
-        if (Platform.OS === 'ios') {
-            if (!__DEV__) safeScreenshotPrevent.enableSecureView();
-        }
-
         return () => {
-            if (Platform.OS === 'android') {
-                safeScreenshotPrevent.disable();
-            }
-            if (Platform.OS === 'ios') {
-                if (!__DEV__) safeScreenshotPrevent.disableSecureView();
+            if (Platform.OS === 'ios' && !__DEV__) {
+                try {
+                    const { disableSecureView } = require('react-native-screenshot-prevent');
+                    if (typeof disableSecureView === 'function') disableSecureView();
+                } catch (e) { }
             }
         };
     }, []);
 
     useEffect(() => {
         setOnUnauthorizedCallback(() => {
-            if (navigationRef.isReady()) {
-                navigationRef.reset({
-                    index: 0,
-                    routes: [{ name: 'index' }],
-                });
-            }
+            store.dispatch(logoutUser());
         });
     }, []);
+    useEffect(() => {
+        const prev = prevTokenRef.current;
+        prevTokenRef.current = token;
+
+        if (token && (prev === undefined || prev === null)) {
+            userService.trackAppOpen();
+        }
+    }, [token]);
 
     return <MainNavigation />;
 }

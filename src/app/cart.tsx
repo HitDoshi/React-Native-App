@@ -323,7 +323,8 @@ export default function CartScreen() {
                     {cartItems.map((item) => (
                         <View key={item._id} style={styles.itemCard}>
                             <View style={styles.itemMain}>
-                                <Image source={{ uri: item.product?.images?.[0] || 'https://lh3.googleusercontent.com/aida-public/placeholder' }} style={styles.itemImage} />
+                                <Image source={{ uri: item.product?.images?.[0] || 'https://lh3.googleusercontent.com/aida-public/placeholder' }} style={styles.itemImage} resizeMode="cover"
+                                    resizeMethod="resize" />
                                 <View style={styles.itemInfo}>
                                     <View style={styles.itemHeader}>
                                         <View style={{ flex: 1 }}>

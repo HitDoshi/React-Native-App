@@ -102,12 +102,17 @@ export default function FavoritesScreen() {
             activeOpacity={0.9}
         >
             <View style={styles.imageContainer}>
-                <Image source={{ uri: item.image }} style={styles.productImage} />
+                <Image
+                    source={{ uri: item.image }}
+                    style={styles.productImage}
+                    resizeMode="cover"
+                    resizeMethod="resize"
+                />
                 <TouchableOpacity
                     style={styles.favoriteButton}
                     onPress={() => removeFavorite((item.id || item._id).toString())}
                 >
-                    <Icon name="favorite" size={18} color="#f43f5e" />
+                    <Icon name="favorite" size={18} color={GOLD} />
                 </TouchableOpacity>
             </View>
 
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
     // productCard: { borderRadius: 24, padding: 10, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.2, shadowRadius: 16, elevation: 5 },
     productCard: { backgroundColor: NAVY_CARD, borderRadius: 24, padding: 10, borderWidth: 1, borderColor: NAVY_BORDER },
     // imageContainer: { width: '100%', aspectRatio: 1, borderRadius: 18, overflow: 'hidden', backgroundColor: NAVY_INPUT },
-    imageContainer: { width: '100%', aspectRatio: 1, borderRadius: 18, overflow: 'hidden', backgroundColor: '#000' },
+    imageContainer: { width: '100%', aspectRatio: 1, borderRadius: 18, overflow: 'hidden', backgroundColor: NAVY_INPUT },
     // productImage: { position: 'absolute', width: '100%', height: '100%' },
     productImage: { ...StyleSheet.absoluteFillObject },
     favoriteButton: { position: 'absolute', top: 8, right: 8, width: 34, height: 34, borderRadius: 17, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },

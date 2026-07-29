@@ -168,7 +168,12 @@ export default function CatalogScreen() {
             activeOpacity={0.9}
         >
             <View style={styles.imageContainer}>
-                <Image source={{ uri: getImageUrl(item.image || item.images?.[0]) }} style={styles.productImage} />
+                <Image
+                    source={{ uri: getImageUrl(item.image || item.images?.[0]) }}
+                    style={styles.productImage}
+                    resizeMode="cover"
+                    resizeMethod="resize"
+                />
                 <TouchableOpacity
                     style={styles.favoriteButton}
                     onPress={() => handleToggleFavorite(item)}
@@ -265,6 +270,8 @@ export default function CatalogScreen() {
                 contentContainerStyle={[styles.listContent, { paddingBottom: 100 }]}
                 columnWrapperStyle={styles.columnWrapper}
                 showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                keyboardDismissMode="on-drag"
                 ListHeaderComponent={
                     <View style={styles.listHeader}>
                         <Text style={styles.resultsCount}>{filteredProducts.length} DESIGNS FOUND</Text>
@@ -346,7 +353,7 @@ const styles = StyleSheet.create({
     listContent: { paddingHorizontal: 20, paddingTop: 20 },
     columnWrapper: { justifyContent: 'space-between', marginBottom: 20 },
     productCard: { backgroundColor: NAVY_CARD, borderRadius: 24, padding: 10, borderWidth: 1, borderColor: NAVY_BORDER },
-    imageContainer: { width: '100%', aspectRatio: 1, borderRadius: 18, overflow: 'hidden', backgroundColor: '#000' },
+    imageContainer: { width: '100%', aspectRatio: 1, borderRadius: 18, overflow: 'hidden', backgroundColor: NAVY_INPUT },
     productImage: { ...StyleSheet.absoluteFillObject },
     favoriteButton: { position: 'absolute', top: 8, right: 8, width: 32, height: 32, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
     productInfo: { padding: 8, },

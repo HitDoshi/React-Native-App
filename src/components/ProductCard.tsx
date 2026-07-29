@@ -41,6 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, width = DEFAULT_CARD_WI
                     source={{ uri: getImageUrl(item.images?.[0] || item.image) }}
                     style={styles.productImage}
                     resizeMode="contain"
+                    resizeMethod='resize'
                 />
                 <TouchableOpacity
                     style={styles.favoriteButton}

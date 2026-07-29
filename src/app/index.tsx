@@ -5,12 +5,10 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    KeyboardAvoidingView,
-    Platform,
     ActivityIndicator,
-    ScrollView,
     Animated,
 } from 'react-native';
+import KeyboardAwareScreen from '../components/KeyboardAwareScreen';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { StatusBar } from 'react-native';
 import Icon from '../components/Icon';
@@ -132,187 +130,181 @@ export default function LoginScreen() {
 
             <View style={styles.goldTopLine} />
 
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            <KeyboardAwareScreen
                 style={styles.keyboardView}
+                contentContainerStyle={styles.scrollContent}
             >
-                <ScrollView
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    <View style={styles.contentContainer}>
+                <View style={styles.contentContainer}>
 
-                        <View style={styles.brandSection}>
-                            <View style={styles.logoRing}>
+                    <View style={styles.brandSection}>
+                        <View style={styles.logoRing}>
+                            <LinearGradient
+                                colors={[GOLD_DARK, GOLD, GOLD_LIGHT]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.logoGradient}
+                            >
+                                <Icon name="diamond" size={28} color={NAVY} />
+                            </LinearGradient>
+                        </View>
+                        <Text style={styles.brandName}>SV GOLD</Text>
+                        <Text style={styles.brandTagline}>WHOLESALE PARTNER PORTAL</Text>
+                    </View>
+
+                    <Animated.View style={[styles.card, { transform: [{ translateX: shakeAnim }] }]}>
+
+                        <Text style={styles.cardTitle}>Welcome Back</Text>
+                        <Text style={styles.cardSubtitle}>Sign in to your wholesale account</Text>
+
+                        {/* Pending Approval Banner */}
+                        {accountStatus === 'pending' ? (
+                            <View style={styles.pendingBanner}>
+                                <Icon name="info" size={18} color="#F59E0B" />
+                                <View style={{ flex: 1 }}>
+                                    <Text style={styles.pendingBannerTitle}>Account Under Review</Text>
+                                    <Text style={styles.pendingBannerText}>Your registration is pending admin approval. You will be notified once approved.</Text>
+                                </View>
+                            </View>
+                        ) : accountStatus === 'rejected' ? (
+                            <View style={styles.rejectedBanner}>
+                                <Icon name="lock" size={18} color="#F87171" />
+                                <View style={{ flex: 1 }}>
+                                    <Text style={styles.pendingBannerTitle}>Account Rejected</Text>
+                                    <Text style={styles.pendingBannerText}>{serverError || 'Your account was not approved. Please contact support.'}</Text>
+                                </View>
+                            </View>
+                        ) : serverError ? (
+                            <View style={styles.errorBanner}>
+                                <Icon name="error-outline" size={16} color={ERROR_COLOR} />
+                                <Text style={styles.errorBannerText}>{serverError}</Text>
+                            </View>
+                        ) : null}
+
+                        <View style={styles.form}>
+
+                            <View style={styles.inputGroup}>
+                                <Text style={styles.label}>EMAIL / PHONE / USER ID</Text>
+                                <View style={[
+                                    styles.inputRow,
+                                    fieldErrors.email ? styles.inputRowError : null,
+                                ]}>
+                                    <Icon name="person" size={20} color={fieldErrors.email ? ERROR_COLOR : GOLD} style={styles.inputIcon} />
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Enter your email or ID"
+                                        placeholderTextColor={TEXT_MUTED}
+                                        value={email}
+                                        onChangeText={(v) => handleFieldChange('email', v)}
+                                        autoCapitalize="none"
+                                        keyboardType="email-address"
+                                        returnKeyType="next"
+                                    />
+                                </View>
+                                {fieldErrors.email ? (
+                                    <View style={styles.inlineError}>
+                                        <Icon name="error-outline" size={13} color={ERROR_COLOR} />
+                                        <Text style={styles.inlineErrorText}>{fieldErrors.email}</Text>
+                                    </View>
+                                ) : null}
+                            </View>
+
+                            <View style={styles.inputGroup}>
+                                <Text style={styles.label}>PASSWORD</Text>
+                                <View style={[
+                                    styles.inputRow,
+                                    fieldErrors.password ? styles.inputRowError : null,
+                                ]}>
+                                    <Icon name="lock" size={20} color={fieldErrors.password ? ERROR_COLOR : GOLD} style={styles.inputIcon} />
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Min 6 characters"
+                                        placeholderTextColor={TEXT_MUTED}
+                                        value={password}
+                                        onChangeText={(v) => handleFieldChange('password', v)}
+                                        secureTextEntry={!showPassword}
+                                        returnKeyType="done"
+                                        onSubmitEditing={handleLogin}
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() => setShowPassword(!showPassword)}
+                                        style={styles.eyeBtn}
+                                    >
+                                        <Icon name={showPassword ? 'visibility' : 'visibility-off'} size={20} color={GOLD} />
+                                    </TouchableOpacity>
+                                </View>
+                                {fieldErrors.password ? (
+                                    <View style={styles.inlineError}>
+                                        <Icon name="error-outline" size={13} color={ERROR_COLOR} />
+                                        <Text style={styles.inlineErrorText}>{fieldErrors.password}</Text>
+                                    </View>
+                                ) : null}
+                            </View>
+
+                            <View style={styles.optionsRow}>
+                                <TouchableOpacity
+                                    style={styles.checkboxRow}
+                                    onPress={() => setRememberSession(!rememberSession)}
+                                >
+                                    <View style={[styles.checkbox, rememberSession && styles.checkboxChecked]}>
+                                        {rememberSession && <Icon name="check" size={12} color={NAVY} />}
+                                    </View>
+                                    <Text style={styles.checkboxLabel}>Remember me</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => navigation.navigate('forgot-password' as any)}>
+                                    <Text style={styles.forgotLink}>Forgot Password?</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <TouchableOpacity
+                                onPress={handleLogin}
+                                disabled={isAuthenticating}
+                                activeOpacity={0.85}
+                            >
                                 <LinearGradient
                                     colors={[GOLD_DARK, GOLD, GOLD_LIGHT]}
                                     start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 1 }}
-                                    style={styles.logoGradient}
+                                    end={{ x: 1, y: 0 }}
+                                    style={styles.loginBtn}
                                 >
-                                    <Icon name="diamond" size={28} color={NAVY} />
+                                    {isAuthenticating ? (
+                                        <ActivityIndicator color={NAVY} />
+                                    ) : (
+                                        <>
+                                            <Text style={styles.loginBtnText}>Login to Dashboard</Text>
+                                            <Icon name="arrow-forward" size={18} color={NAVY} style={{ marginLeft: 8 }} />
+                                        </>
+                                    )}
                                 </LinearGradient>
-                            </View>
-                            <Text style={styles.brandName}>SV GOLD</Text>
-                            <Text style={styles.brandTagline}>WHOLESALE PARTNER PORTAL</Text>
+                            </TouchableOpacity>
+
                         </View>
 
-                        <Animated.View style={[styles.card, { transform: [{ translateX: shakeAnim }] }]}>
-
-                            <Text style={styles.cardTitle}>Welcome Back</Text>
-                            <Text style={styles.cardSubtitle}>Sign in to your wholesale account</Text>
-
-                            {/* Pending Approval Banner */}
-                            {accountStatus === 'pending' ? (
-                                <View style={styles.pendingBanner}>
-                                    <Icon name="info" size={18} color="#F59E0B" />
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={styles.pendingBannerTitle}>Account Under Review</Text>
-                                        <Text style={styles.pendingBannerText}>Your registration is pending admin approval. You will be notified once approved.</Text>
-                                    </View>
-                                </View>
-                            ) : accountStatus === 'rejected' ? (
-                                <View style={styles.rejectedBanner}>
-                                    <Icon name="lock" size={18} color="#F87171" />
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={styles.pendingBannerTitle}>Account Rejected</Text>
-                                        <Text style={styles.pendingBannerText}>{serverError || 'Your account was not approved. Please contact support.'}</Text>
-                                    </View>
-                                </View>
-                            ) : serverError ? (
-                                <View style={styles.errorBanner}>
-                                    <Icon name="error-outline" size={16} color={ERROR_COLOR} />
-                                    <Text style={styles.errorBannerText}>{serverError}</Text>
-                                </View>
-                            ) : null}
-
-                            <View style={styles.form}>
-
-                                <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>EMAIL / PHONE / USER ID</Text>
-                                    <View style={[
-                                        styles.inputRow,
-                                        fieldErrors.email ? styles.inputRowError : null,
-                                    ]}>
-                                        <Icon name="person" size={20} color={fieldErrors.email ? ERROR_COLOR : GOLD} style={styles.inputIcon} />
-                                        <TextInput
-                                            style={styles.input}
-                                            placeholder="Enter your email or ID"
-                                            placeholderTextColor={TEXT_MUTED}
-                                            value={email}
-                                            onChangeText={(v) => handleFieldChange('email', v)}
-                                            autoCapitalize="none"
-                                            keyboardType="email-address"
-                                            returnKeyType="next"
-                                        />
-                                    </View>
-                                    {fieldErrors.email ? (
-                                        <View style={styles.inlineError}>
-                                            <Icon name="error-outline" size={13} color={ERROR_COLOR} />
-                                            <Text style={styles.inlineErrorText}>{fieldErrors.email}</Text>
-                                        </View>
-                                    ) : null}
-                                </View>
-
-                                <View style={styles.inputGroup}>
-                                    <Text style={styles.label}>PASSWORD</Text>
-                                    <View style={[
-                                        styles.inputRow,
-                                        fieldErrors.password ? styles.inputRowError : null,
-                                    ]}>
-                                        <Icon name="lock" size={20} color={fieldErrors.password ? ERROR_COLOR : GOLD} style={styles.inputIcon} />
-                                        <TextInput
-                                            style={styles.input}
-                                            placeholder="Min 6 characters"
-                                            placeholderTextColor={TEXT_MUTED}
-                                            value={password}
-                                            onChangeText={(v) => handleFieldChange('password', v)}
-                                            secureTextEntry={!showPassword}
-                                            returnKeyType="done"
-                                            onSubmitEditing={handleLogin}
-                                        />
-                                        <TouchableOpacity
-                                            onPress={() => setShowPassword(!showPassword)}
-                                            style={styles.eyeBtn}
-                                        >
-                                            <Icon name={showPassword ? 'visibility' : 'visibility-off'} size={20} color={GOLD} />
-                                        </TouchableOpacity>
-                                    </View>
-                                    {fieldErrors.password ? (
-                                        <View style={styles.inlineError}>
-                                            <Icon name="error-outline" size={13} color={ERROR_COLOR} />
-                                            <Text style={styles.inlineErrorText}>{fieldErrors.password}</Text>
-                                        </View>
-                                    ) : null}
-                                </View>
-
-                                <View style={styles.optionsRow}>
-                                    <TouchableOpacity
-                                        style={styles.checkboxRow}
-                                        onPress={() => setRememberSession(!rememberSession)}
-                                    >
-                                        <View style={[styles.checkbox, rememberSession && styles.checkboxChecked]}>
-                                            {rememberSession && <Icon name="check" size={12} color={NAVY} />}
-                                        </View>
-                                        <Text style={styles.checkboxLabel}>Remember me</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => navigation.navigate('forgot-password' as any)}>
-                                        <Text style={styles.forgotLink}>Forgot Password?</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <TouchableOpacity
-                                    onPress={handleLogin}
-                                    disabled={isAuthenticating}
-                                    activeOpacity={0.85}
-                                >
-                                    <LinearGradient
-                                        colors={[GOLD_DARK, GOLD, GOLD_LIGHT]}
-                                        start={{ x: 0, y: 0 }}
-                                        end={{ x: 1, y: 0 }}
-                                        style={styles.loginBtn}
-                                    >
-                                        {isAuthenticating ? (
-                                            <ActivityIndicator color={NAVY} />
-                                        ) : (
-                                            <>
-                                                <Text style={styles.loginBtnText}>Login to Dashboard</Text>
-                                                <Icon name="arrow-forward" size={18} color={NAVY} style={{ marginLeft: 8 }} />
-                                            </>
-                                        )}
-                                    </LinearGradient>
-                                </TouchableOpacity>
-
-                            </View>
-
-                            <View style={styles.cardFooter}>
-                                <Text style={styles.footerText}>New wholesale partner? </Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('register' as any)}>
-                                    <Text style={styles.footerLink}>Request Access</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                        </Animated.View>
-
-                        <View style={styles.bottomInfo}>
-                            <View style={styles.goldDividerRow}>
-                                <View style={styles.goldLine} />
-                                <Icon name="verified" size={12} color={GOLD} />
-                                <View style={styles.goldLine} />
-                            </View>
-                            <Text style={styles.bottomInfoText}>SV GOLD WHOLESALE · v1.0.0</Text>
-                            <View style={styles.bottomLinks}>
-                                <TouchableOpacity><Text style={styles.bottomLink}>Privacy Policy</Text></TouchableOpacity>
-                                <View style={styles.dot} />
-                                <TouchableOpacity><Text style={styles.bottomLink}>Terms of Use</Text></TouchableOpacity>
-                            </View>
+                        <View style={styles.cardFooter}>
+                            <Text style={styles.footerText}>New wholesale partner? </Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('register' as any)}>
+                                <Text style={styles.footerLink}>Request Access</Text>
+                            </TouchableOpacity>
                         </View>
 
+                    </Animated.View>
+
+                    <View style={styles.bottomInfo}>
+                        <View style={styles.goldDividerRow}>
+                            <View style={styles.goldLine} />
+                            <Icon name="verified" size={12} color={GOLD} />
+                            <View style={styles.goldLine} />
+                        </View>
+                        <Text style={styles.bottomInfoText}>SV GOLD WHOLESALE · v1.0.0</Text>
+                        <View style={styles.bottomLinks}>
+                            <TouchableOpacity><Text style={styles.bottomLink}>Privacy Policy</Text></TouchableOpacity>
+                            <View style={styles.dot} />
+                            <TouchableOpacity><Text style={styles.bottomLink}>Terms of Use</Text></TouchableOpacity>
+                        </View>
                     </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+
+                </View>
+            </KeyboardAwareScreen>
         </View>
     );
 }

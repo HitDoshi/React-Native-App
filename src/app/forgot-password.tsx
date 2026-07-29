@@ -5,13 +5,11 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    KeyboardAvoidingView,
-    Platform,
     Alert,
     ActivityIndicator,
-    ScrollView,
     StatusBar,
 } from 'react-native';
+import KeyboardAwareScreen from '../components/KeyboardAwareScreen';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -106,57 +104,57 @@ export default function ForgotPasswordScreen() {
                 <View style={{ width: 44 }} />
             </View>
 
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                    <View style={styles.contentContainer}>
-                        <View style={styles.iconWrapper}>
-                            <Icon name="lock-reset" size={56} color={GOLD} />
-                        </View>
+            <KeyboardAwareScreen
+                contentContainerStyle={styles.scrollContent}
+            >
+                <View style={styles.contentContainer}>
+                    <View style={styles.iconWrapper}>
+                        <Icon name="lock-reset" size={56} color={GOLD} />
+                    </View>
 
-                        <Text style={styles.title}>Reset Password</Text>
-                        <Text style={styles.subtitle}>
-                            Enter your registered email address to receive a 6-digit verification code.
-                        </Text>
+                    <Text style={styles.title}>Reset Password</Text>
+                    <Text style={styles.subtitle}>
+                        Enter your registered email address to receive a 6-digit verification code.
+                    </Text>
 
-                        <View style={styles.panel}>
-                            <View style={styles.inputGroup}>
-                                <Text style={styles.label}>BUSINESS EMAIL</Text>
-                                <View style={styles.inputContainer}>
-                                    <Icon name="email" size={20} color={GOLD} style={styles.inputIcon} />
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="email@company.com"
-                                        placeholderTextColor={TEXT_MUTED}
-                                        keyboardType="email-address"
-                                        autoCapitalize="none"
-                                        value={email}
-                                        onChangeText={(v) => {
-                                            setEmail(v);
-                                            if (fieldError) setFieldError('');
-                                        }}
-                                    />
-                                </View>
-                                {fieldError ? (
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4, paddingLeft: 2 }}>
-                                        <Icon name="error-outline" size={12} color="#F87171" />
-                                        <Text style={{ color: '#F87171', fontSize: 12, fontWeight: '600' }}>{fieldError}</Text>
-                                    </View>
-                                ) : null}
+                    <View style={styles.panel}>
+                        <View style={styles.inputGroup}>
+                            <Text style={styles.label}>BUSINESS EMAIL</Text>
+                            <View style={styles.inputContainer}>
+                                <Icon name="email" size={20} color={GOLD} style={styles.inputIcon} />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="email@company.com"
+                                    placeholderTextColor={TEXT_MUTED}
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    value={email}
+                                    onChangeText={(v) => {
+                                        setEmail(v);
+                                        if (fieldError) setFieldError('');
+                                    }}
+                                />
                             </View>
-
-                            <TouchableOpacity style={styles.sendButton} onPress={handleSendCode} disabled={loading}>
-                                <LinearGradient colors={[GOLD_DARK, GOLD, GOLD_LIGHT]} style={styles.btnGradient}>
-                                    {loading ? <ActivityIndicator color={NAVY} /> : <Text style={styles.sendButtonText}>SEND VERIFICATION CODE</Text>}
-                                </LinearGradient>
-                            </TouchableOpacity>
+                            {fieldError ? (
+                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4, paddingLeft: 2 }}>
+                                    <Icon name="error-outline" size={12} color="#F87171" />
+                                    <Text style={{ color: '#F87171', fontSize: 12, fontWeight: '600' }}>{fieldError}</Text>
+                                </View>
+                            ) : null}
                         </View>
 
-                        <TouchableOpacity style={styles.loginLink} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'index' }] })}>
-                            <Text style={styles.loginLinkText}>Remembered? <Text style={{ color: GOLD }}>Back to Login</Text></Text>
+                        <TouchableOpacity style={styles.sendButton} onPress={handleSendCode} disabled={loading}>
+                            <LinearGradient colors={[GOLD_DARK, GOLD, GOLD_LIGHT]} style={styles.btnGradient}>
+                                {loading ? <ActivityIndicator color={NAVY} /> : <Text style={styles.sendButtonText}>SEND VERIFICATION CODE</Text>}
+                            </LinearGradient>
                         </TouchableOpacity>
                     </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+
+                    <TouchableOpacity style={styles.loginLink} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'index' }] })}>
+                        <Text style={styles.loginLinkText}>Remembered? <Text style={{ color: GOLD }}>Back to Login</Text></Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAwareScreen>
         </View>
     );
 }
