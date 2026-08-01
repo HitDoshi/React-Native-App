@@ -312,7 +312,7 @@ export default function OrderHistoryScreen() {
                                                 <View key={idx} style={styles.expandedItemRow}>
                                                     <Image source={{ uri: imgUrl }} style={styles.expandedItemImage} />
                                                     <View style={styles.expandedItemDetails}>
-                                                        <Text style={styles.expandedItemName} numberOfLines={1}>{productName}</Text>
+                                                        <Text style={styles.expandedItemName} numberOfLines={1}>{productName?.toLowerCase() || ''}</Text>
                                                         <Text style={styles.expandedItemText} numberOfLines={1}>DESIGN NO. {item.designNumber || productDesign || 'N/A'}</Text>
                                                         <Text style={styles.expandedItemText} numberOfLines={1}>TAG NO. {item.tagNumber || item.product?.tagNumber || 'N/A'}</Text>
                                                         <View style={styles.expandedItemMetaRow}>
@@ -639,6 +639,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: TEXT_PRIMARY,
         marginBottom: 2,
+        textTransform: 'capitalize'
     },
     expandedItemText: {
         fontSize: 10,

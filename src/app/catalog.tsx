@@ -187,7 +187,7 @@ export default function CatalogScreen() {
             </View>
 
             <View style={styles.productInfo}>
-                <Text style={styles.productName} numberOfLines={1}>{item.name}</Text>
+                <Text style={styles.productName} numberOfLines={1}>{item?.name?.toLowerCase() || ''}</Text>
                 <Text style={styles.designText}>DESIGN NO. {item.designNumber || item.ref || 'N/A'}</Text>
                 <Text style={styles.tagText}>TAG NO. {item.tagNumber || 'N/A'}</Text>
                 <View style={styles.weightRow}>
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     productImage: { ...StyleSheet.absoluteFillObject },
     favoriteButton: { position: 'absolute', top: 8, right: 8, width: 32, height: 32, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
     productInfo: { padding: 8, },
-    productName: { fontSize: 14, fontWeight: '500', color: TEXT_PRIMARY },
+    productName: { fontSize: 14, fontWeight: '500', color: TEXT_PRIMARY, textTransform: 'capitalize' },
     designText: { fontSize: 9, fontWeight: '900', color: TEXT_MUTED, letterSpacing: 0.5 },
     tagText: { fontSize: 9, fontWeight: '900', color: '#6366f1', letterSpacing: 0.5, marginTop: 2 },
     weightRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingVertical: 6, borderTopWidth: 0.5, borderBottomWidth: 0.5, borderColor: 'rgba(232,201,122,0.1)' },

@@ -306,7 +306,7 @@ export default function HomeScreen() {
                                     />
 
                                     <View style={styles.catFooter}>
-                                        <Text style={styles.catName} numberOfLines={1}>{cat.name}</Text>
+                                        <Text style={styles.catName} numberOfLines={1}>{cat?.name?.toLowerCase() || ''}</Text>
                                         {active && (
                                             <Text style={styles.catShopNow}>SHOP NOW ›</Text>
                                         )}
@@ -345,7 +345,7 @@ export default function HomeScreen() {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.productBrief}>
-                                    <Text style={styles.productTitle} numberOfLines={1}>{item.name}</Text>
+                                    <Text style={styles.productTitle} numberOfLines={1}>{item?.name?.toLowerCase() || ''}</Text>
                                     <View style={styles.weightBadge}>
                                         <Text style={styles.weightLabel}>NET WT.</Text>
                                         <Text style={styles.weightValue}>{item.netWt} gm</Text>
@@ -379,7 +379,7 @@ export default function HomeScreen() {
                                     <View style={styles.historyInfo}>
                                         {/* Name + category */}
                                         <View style={styles.historyTitleRow}>
-                                            <Text style={styles.historyTitle} numberOfLines={1}>{item.name}</Text>
+                                            <Text style={styles.historyTitle} numberOfLines={1}>{item?.name?.toLowerCase() || ''}</Text>
                                             {item.category?.name ? (
                                                 <View style={styles.historyCatBadge}>
                                                     <Text style={styles.historyCatText}>{item.category.name}</Text>

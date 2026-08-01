@@ -441,7 +441,7 @@ function FieldItem({ label, value, icon, editing, onChangeText, readOnly, keyboa
                         <Text style={styles.detailValue}>{value || 'Not Provided'}</Text>
                     )}
                 </View>
-                <View style={styles.detailIconContainer}><Icon name={icon} size={20} color={GOLD} /></View>
+                <View style={styles.detailIconContainer}><Icon name={icon} size={18} color={GOLD} /></View>
             </View>
             {error ? (
                 <View style={styles.inlineError}>
@@ -459,7 +459,7 @@ const ERROR_COLOR = '#F87171';
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: NAVY },
     background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { paddingHorizontal: 20, paddingBottom: 140, paddingTop: 16 },
+    scrollContent: { paddingHorizontal: 20, paddingBottom: 120, paddingTop: 16 },
     editButton: { height: 44, paddingHorizontal: 16, justifyContent: 'center' },
     editButtonText: { fontSize: 11, fontWeight: '900', color: GOLD, letterSpacing: 1 },
     saveButton: { height: 36, paddingHorizontal: 16, backgroundColor: GOLD, borderRadius: 12, justifyContent: 'center' },
@@ -467,43 +467,43 @@ const styles = StyleSheet.create({
     cancelButton: { height: 36, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1, borderColor: NAVY_BORDER, justifyContent: 'center' },
     cancelButtonText: { fontSize: 10, fontWeight: '800', color: TEXT_MUTED },
 
-    profileCard: { backgroundColor: NAVY_CARD, borderRadius: 32, padding: 32, alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER, marginBottom: 32, shadowColor: '#000', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 32, elevation: 10 },
-    avatarContainer: { position: 'relative', marginBottom: 20 },
+    profileCard: { backgroundColor: NAVY_CARD, borderRadius: 24, padding: 24, alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER, marginBottom: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 32, elevation: 10 },
+    avatarContainer: { position: 'relative', marginBottom: 16 },
     avatarBorder: { padding: 4, borderRadius: 64, borderWidth: 2, borderColor: GOLD },
-    avatar: { width: 110, height: 110, borderRadius: 55, backgroundColor: NAVY_INPUT },
+    avatar: { width: 90, height: 90, borderRadius: 45, backgroundColor: NAVY_INPUT },
     verifiedBadge: { position: 'absolute', bottom: 4, right: 4, backgroundColor: GOLD, padding: 6, borderRadius: 16, borderWidth: 3, borderColor: NAVY_CARD },
     profileInfo: { alignItems: 'center', gap: 6 },
-    profileName: { fontSize: 24, fontWeight: '800', color: TEXT_PRIMARY },
+    profileName: { fontSize: 22, fontWeight: '800', color: TEXT_PRIMARY },
     profileRole: { fontSize: 10, fontWeight: '900', color: GOLD, letterSpacing: 2 },
-    profileCompany: { fontSize: 15, fontWeight: '600', color: TEXT_MUTED },
+    profileCompany: { fontSize: 14, fontWeight: '600', color: TEXT_MUTED },
 
     section: { marginBottom: 16 },
-    sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 16 },
+    sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
     sectionTitle: { fontSize: 10, fontWeight: '900', color: GOLD, letterSpacing: 2 },
-    detailsList: { gap: 12 },
+    detailsList: { gap: 10 },
     detailItemContainer: { gap: 6 },
-    detailItem: { flexDirection: 'row', alignItems: 'center', padding: 20, borderRadius: 24, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER },
+    detailItem: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 16, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER },
     detailTextContainer: { flex: 1 },
     detailLabel: { fontSize: 9, fontWeight: '900', color: TEXT_MUTED, letterSpacing: 1.5, marginBottom: 4 },
     inlineError: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingLeft: 12 },
     inlineErrorText: { color: ERROR_COLOR, fontSize: 11, fontWeight: '600' },
-    detailValue: { fontSize: 14, fontWeight: '700', color: TEXT_PRIMARY },
-    detailInput: { fontSize: 14, fontWeight: '700', color: TEXT_PRIMARY, padding: 0 },
-    detailIconContainer: { width: 44, height: 44, borderRadius: 22, backgroundColor: NAVY_INPUT, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER },
+    detailValue: { fontSize: 13, fontWeight: '700', color: TEXT_PRIMARY },
+    detailInput: { fontSize: 13, fontWeight: '700', color: TEXT_PRIMARY, padding: 0 },
+    detailIconContainer: { width: 36, height: 36, borderRadius: 18, backgroundColor: NAVY_INPUT, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER },
 
-    uploadCard: { height: 160, borderRadius: 24, backgroundColor: NAVY_CARD, borderWidth: 2, borderColor: NAVY_BORDER, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', gap: 12 },
+    uploadCard: { height: 120, borderRadius: 16, backgroundColor: NAVY_CARD, borderWidth: 2, borderColor: NAVY_BORDER, borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', gap: 10 },
     uploadCardText: { fontSize: 10, fontWeight: '900', color: GOLD },
-    cardPreview: { borderRadius: 24, backgroundColor: NAVY_CARD, overflow: 'hidden', borderWidth: 1, borderColor: NAVY_BORDER },
-    visitingCardImage: { width: '100%', height: 200 },
-    cardActions: { flexDirection: 'row', padding: 12, gap: 12, backgroundColor: 'rgba(0,0,0,0.3)' },
-    changeCardBtn: { flex: 1, height: 40, borderRadius: 12, backgroundColor: NAVY_INPUT, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
-    removeCardBtn: { flex: 1, height: 40, borderRadius: 12, backgroundColor: 'rgba(251,113,133,0.1)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: 'rgba(251,113,133,0.2)' },
+    cardPreview: { borderRadius: 16, backgroundColor: NAVY_CARD, overflow: 'hidden', borderWidth: 1, borderColor: NAVY_BORDER },
+    visitingCardImage: { width: '100%', height: 160 },
+    cardActions: { flexDirection: 'row', padding: 10, gap: 10, backgroundColor: 'rgba(0,0,0,0.3)' },
+    changeCardBtn: { flex: 1, height: 36, borderRadius: 10, backgroundColor: NAVY_INPUT, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+    removeCardBtn: { flex: 1, height: 36, borderRadius: 10, backgroundColor: 'rgba(251,113,133,0.1)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: 'rgba(251,113,133,0.2)' },
     changeCardText: { fontSize: 11, fontWeight: '900', color: GOLD },
 
-    actionBtnPrimary: { marginBottom: 16, height: 56, borderRadius: 16, backgroundColor: GOLD, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, gap: 12 },
-    actionBtnPrimaryText: { fontSize: 14, fontWeight: '800', color: NAVY },
-    actionBtn: { height: 56, borderRadius: 16, backgroundColor: 'rgba(251,113,133,0.05)', borderWidth: 1, borderColor: 'rgba(251,113,133,0.15)', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, gap: 12 },
-    logoutText: { fontSize: 14, fontWeight: '700', color: '#fb7185' },
+    actionBtnPrimary: { marginBottom: 16, height: 48, borderRadius: 12, backgroundColor: GOLD, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, gap: 12 },
+    actionBtnPrimaryText: { fontSize: 13, fontWeight: '800', color: NAVY },
+    actionBtn: { height: 48, borderRadius: 12, backgroundColor: 'rgba(251,113,133,0.05)', borderWidth: 1, borderColor: 'rgba(251,113,133,0.15)', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, gap: 12 },
+    logoutText: { fontSize: 13, fontWeight: '700', color: '#fb7185' },
     footerInfo: { alignItems: 'center', gap: 8 },
     memberSince: { fontSize: 10, fontWeight: '900', color: TEXT_MUTED, letterSpacing: 2 },
     versionText: { fontSize: 9, fontWeight: '600', color: TEXT_MUTED, opacity: 0.5 },

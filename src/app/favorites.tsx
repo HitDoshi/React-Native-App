@@ -117,7 +117,7 @@ export default function FavoritesScreen() {
             </View>
 
             <View style={styles.productInfo}>
-                <Text style={styles.productName} numberOfLines={1}>{item.name}</Text>
+                <Text style={styles.productName} numberOfLines={1}>{item?.name?.toLowerCase() || ''}</Text>
 
                 <View style={styles.weightRow}>
                     {/* <View style={styles.weightItem}> */}
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     productImage: { ...StyleSheet.absoluteFillObject },
     favoriteButton: { position: 'absolute', top: 8, right: 8, width: 34, height: 34, borderRadius: 17, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
     productInfo: { padding: 8, },
-    productName: { fontSize: 14, fontWeight: '500', color: TEXT_PRIMARY, },
+    productName: { fontSize: 14, fontWeight: '500', color: TEXT_PRIMARY, textTransform: 'capitalize' },
     weightRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingVertical: 6, borderTopWidth: 0.5, borderBottomWidth: 0.5, borderColor: 'rgba(232,201,122,0.1)' },
     weightItem: { alignItems: 'center' },
     weightLabel: { fontSize: 8, fontWeight: '900', color: GOLD_LIGHT },

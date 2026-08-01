@@ -570,17 +570,17 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
     },
     scrollContent: {
-        paddingTop: 24,
-        paddingBottom: 160,
+        paddingTop: 16,
+        paddingBottom: 140,
         paddingHorizontal: 20,
     },
     card: {
-        borderRadius: 24,
-        padding: 24,
+        borderRadius: 16,
+        padding: 20,
         backgroundColor: NAVY_CARD,
         borderWidth: 1,
         borderColor: NAVY_BORDER,
-        marginBottom: 32,
+        marginBottom: 20,
         overflow: 'hidden',
     },
     cardLabel: {
@@ -647,12 +647,12 @@ const styles = StyleSheet.create({
         letterSpacing: -0.5,
     },
     itemsList: {
-        gap: 20,
-        marginBottom: 32,
+        gap: 16,
+        marginBottom: 24,
     },
     itemCard: {
-        borderRadius: 24,
-        padding: 20,
+        borderRadius: 16,
+        padding: 16,
         backgroundColor: NAVY_CARD,
         borderWidth: 1,
         borderColor: NAVY_BORDER,
@@ -660,13 +660,13 @@ const styles = StyleSheet.create({
     },
     itemMain: {
         flexDirection: 'row',
-        gap: 20,
-        marginBottom: 20,
+        gap: 16,
+        marginBottom: 16,
     },
     itemImage: {
-        width: 72,
-        height: 72,
-        borderRadius: 20,
+        width: 64,
+        height: 64,
+        borderRadius: 16,
         backgroundColor: NAVY_INPUT,
         borderWidth: 1,
         borderColor: NAVY_BORDER,
@@ -717,8 +717,8 @@ const styles = StyleSheet.create({
     },
     itemControls: {
         flexDirection: 'row',
-        gap: 20,
-        marginBottom: 20,
+        gap: 16,
+        marginBottom: 16,
     },
     controlGroup: {
         flex: 1,
@@ -731,7 +731,7 @@ const styles = StyleSheet.create({
         // letterSpacing: 1,
     },
     dateDisplay: {
-        height: 44,
+        height: 40,
         backgroundColor: NAVY_INPUT,
         borderRadius: 12,
         borderWidth: 1,
@@ -750,9 +750,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     qtyBtn: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         backgroundColor: NAVY_INPUT,
         justifyContent: 'center',
         alignItems: 'center',
@@ -760,14 +760,14 @@ const styles = StyleSheet.create({
         borderColor: NAVY_BORDER,
     },
     qtyText: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: '800',
         color: TEXT_PRIMARY,
         width: 32,
         textAlign: 'center',
     },
     itemNoteRow: {
-        marginBottom: 16,
+        marginBottom: 12,
     },
     noteDisplay: {
         backgroundColor: NAVY_INPUT,
@@ -786,7 +786,7 @@ const styles = StyleSheet.create({
     itemDateRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: 12,
         gap: 8,
     },
     dateTextSmall: {
@@ -798,7 +798,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderTopWidth: 1,
         borderTopColor: NAVY_BORDER,
-        paddingTop: 16,
+        paddingTop: 12,
     },
     weightCol: {
         flex: 1,
@@ -822,7 +822,7 @@ const styles = StyleSheet.create({
         color: TEXT_PRIMARY,
     },
     breakdownCard: {
-        marginBottom: 32,
+        marginBottom: 24,
     },
     breakdownTitle: {
         fontSize: 10,
@@ -907,14 +907,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        padding: 24,
+        padding: 20,
         borderTopWidth: 1,
         borderTopColor: NAVY_BORDER,
         backgroundColor: 'rgba(11,18,32,0.95)',
     },
     submitButton: {
-        height: 60,
-        borderRadius: 20,
+        height: 52,
+        borderRadius: 16,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
