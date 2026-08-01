@@ -307,10 +307,10 @@ export default function SearchScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
 
             <LinearGradient
-                colors={[NAVY, NAVY_MID, '#111D35']}
+                colors={[NAVY, NAVY, NAVY, NAVY]}
                 locations={[0, 0.5, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -632,7 +632,7 @@ const styles = StyleSheet.create({
         width: 240,
         borderRadius: 20,
         overflow: 'hidden',
-        shadowColor: '#000',
+        shadowColor: '#1C1B1B',
         shadowOffset: { width: 0, height: 12 },
         shadowOpacity: 0.5,
         shadowRadius: 24,
@@ -755,7 +755,7 @@ const styles = StyleSheet.create({
     clearText: {
         fontSize: 10,
         fontWeight: '900',
-        color: '#ef4444',
+        color: '#BA1A1A',
         letterSpacing: 1,
     },
     recentCard: {

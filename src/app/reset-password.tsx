@@ -99,8 +99,8 @@ export default function ResetPasswordScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
-            <LinearGradient colors={[NAVY, NAVY_MID, '#09101d']} style={styles.background} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
+            <LinearGradient colors={[NAVY, NAVY, NAVY, NAVY]} style={styles.background} />
 
             <MessageModal
                 visible={modalConfig.visible}
@@ -155,8 +155,8 @@ export default function ResetPasswordScreen() {
                             </View>
                             {fieldErrors.otp ? (
                                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 }}>
-                                    <Icon name="error-outline" size={12} color="#F87171" />
-                                    <Text style={{ color: '#F87171', fontSize: 12, fontWeight: '600' }}>{fieldErrors.otp}</Text>
+                                    <Icon name="error-outline" size={12} color='#BA1A1A' />
+                                    <Text style={{ color: '#BA1A1A', fontSize: 12, fontWeight: '600' }}>{fieldErrors.otp}</Text>
                                 </View>
                             ) : null}
                         </View>
@@ -182,8 +182,8 @@ export default function ResetPasswordScreen() {
                             </View>
                             {fieldErrors.password ? (
                                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 }}>
-                                    <Icon name="error-outline" size={12} color="#F87171" />
-                                    <Text style={{ color: '#F87171', fontSize: 12, fontWeight: '600' }}>{fieldErrors.password}</Text>
+                                    <Icon name="error-outline" size={12} color='#BA1A1A' />
+                                    <Text style={{ color: '#BA1A1A', fontSize: 12, fontWeight: '600' }}>{fieldErrors.password}</Text>
                                 </View>
                             ) : null}
                         </View>
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     iconWrapper: { width: 110, height: 110, borderRadius: 55, backgroundColor: NAVY_INPUT, justifyContent: 'center', alignItems: 'center', marginBottom: 24, borderWidth: 1, borderColor: NAVY_BORDER, shadowColor: GOLD, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.1, shadowRadius: 16 },
     title: { fontSize: 28, fontWeight: '800', color: TEXT_PRIMARY, marginBottom: 8, textAlign: 'center' },
     subtitle: { fontSize: 14, fontWeight: '500', color: TEXT_MUTED, textAlign: 'center', marginBottom: 32, lineHeight: 22, paddingHorizontal: 20 },
-    panel: { width: '100%', borderRadius: 32, padding: 24, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, gap: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.2, shadowRadius: 24, elevation: 10 },
+    panel: { width: '100%', borderRadius: 32, padding: 24, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, gap: 20, shadowColor: '#1C1B1B', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.2, shadowRadius: 24, elevation: 10 },
     inputGroup: { gap: 10 },
     label: { fontSize: 10, fontWeight: '900', color: GOLD, paddingHorizontal: 4, letterSpacing: 1.5 },
     inputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: NAVY_INPUT, borderRadius: 16, height: 60, borderWidth: 1, borderColor: NAVY_BORDER },

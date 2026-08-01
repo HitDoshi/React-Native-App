@@ -20,7 +20,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { B2B } from '../constants/Colors';
 
 const { GOLD, GOLD_LIGHT, GOLD_DARK, NAVY, NAVY_CARD, NAVY_BORDER, NAVY_INPUT, TEXT_PRIMARY, TEXT_MUTED, GOLD_DIM, GOLD_BORDER, NAVY_MID } = B2B;
-const ERROR_COLOR = '#F87171';
+const ERROR_COLOR = '#BA1A1A';
 
 type FieldErrors = {
     email?: string;
@@ -118,10 +118,10 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
 
             <LinearGradient
-                colors={[NAVY, NAVY_MID, '#09101d']}
+                colors={[NAVY, NAVY, NAVY, NAVY]}
                 locations={[0, 0.5, 1]}
                 style={styles.background}
                 start={{ x: 0, y: 0 }}
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: NAVY_BORDER,
         padding: 28,
-        shadowColor: '#000',
+        shadowColor: '#1C1B1B',
         shadowOffset: { width: 0, height: 16 },
         shadowOpacity: 0.4, shadowRadius: 32,
         elevation: 12,

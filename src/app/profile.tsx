@@ -214,7 +214,7 @@ export default function BusinessProfileScreen() {
     if (loading) {
         return (
             <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-                <LinearGradient colors={[NAVY, NAVY_MID, '#09101d']} style={styles.background} />
+                <LinearGradient colors={[NAVY, NAVY, NAVY, NAVY]} style={styles.background} />
                 <ActivityIndicator size="large" color={GOLD} />
                 <Text style={{ marginTop: 12, color: TEXT_MUTED, fontSize: 13, fontWeight: '600' }}>Loading profile...</Text>
             </View>
@@ -224,8 +224,8 @@ export default function BusinessProfileScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
-            <LinearGradient colors={[NAVY, NAVY_MID, '#09101d']} style={styles.background} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
+            <LinearGradient colors={[NAVY, NAVY, NAVY, NAVY]} style={styles.background} />
 
             <MessageModal
                 visible={modalConfig.visible}
@@ -296,8 +296,11 @@ export default function BusinessProfileScreen() {
                     </View>
                 </View>
                 <TouchableOpacity style={styles.actionBtnPrimary} onPress={() => navigation.navigate('orders' as any)}>
-                    <Icon name="history" size={20} color={NAVY} />
-                    <Text style={styles.actionBtnPrimaryText}>View Order History</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
+                        <Icon name="history" size={20} color={NAVY} />
+                        <Text style={styles.actionBtnPrimaryText}>View Order History</Text>
+                    </View>
+                    <Icon name="chevron-right" size={24} color={NAVY} />
                 </TouchableOpacity>
 
                 {/* Business Details */}
@@ -322,7 +325,7 @@ export default function BusinessProfileScreen() {
                                         <Icon name="swap-horiz" size={16} color={GOLD} /><Text style={styles.changeCardText}>CHANGE</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.removeCardBtn} onPress={() => setVisitingCard(null)}>
-                                        <Icon name="close" size={16} color="#fb7185" /><Text style={[styles.changeCardText, { color: '#fb7185' }]}>REMOVE</Text>
+                                        <Icon name="close" size={16} color="#BA1A1A" /><Text style={[styles.changeCardText, { color: '#fb7185' }]}>REMOVE</Text>
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -359,7 +362,7 @@ export default function BusinessProfileScreen() {
                 {/* Account Actions */}
                 <View style={[styles.section, { gap: 16 }]}>
                     <TouchableOpacity style={styles.actionBtn} onPress={handleLogout}>
-                        <Icon name="logout" size={20} color="#fb7185" />
+                        <Icon name="logout" size={20} color="#BA1A1A" />
                         <Text style={styles.logoutText}>Logout from Dashboard</Text>
                     </TouchableOpacity>
                 </View>
@@ -454,7 +457,7 @@ function FieldItem({ label, value, icon, editing, onChangeText, readOnly, keyboa
 }
 
 const SUCCESS_COLOR = '#34D399';
-const ERROR_COLOR = '#F87171';
+const ERROR_COLOR = '#BA1A1A';
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: NAVY },
@@ -467,7 +470,7 @@ const styles = StyleSheet.create({
     cancelButton: { height: 36, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1, borderColor: NAVY_BORDER, justifyContent: 'center' },
     cancelButtonText: { fontSize: 10, fontWeight: '800', color: TEXT_MUTED },
 
-    profileCard: { backgroundColor: NAVY_CARD, borderRadius: 24, padding: 24, alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER, marginBottom: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 32, elevation: 10 },
+    profileCard: { backgroundColor: NAVY_CARD, borderRadius: 24, padding: 16, alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER, marginBottom: 24, shadowColor: '#1C1B1B', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 32, elevation: 10 },
     avatarContainer: { position: 'relative', marginBottom: 16 },
     avatarBorder: { padding: 4, borderRadius: 64, borderWidth: 2, borderColor: GOLD },
     avatar: { width: 90, height: 90, borderRadius: 45, backgroundColor: NAVY_INPUT },
@@ -482,7 +485,7 @@ const styles = StyleSheet.create({
     sectionTitle: { fontSize: 10, fontWeight: '900', color: GOLD, letterSpacing: 2 },
     detailsList: { gap: 10 },
     detailItemContainer: { gap: 6 },
-    detailItem: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 16, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER },
+    detailItem: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 12, borderRadius: 16, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER },
     detailTextContainer: { flex: 1 },
     detailLabel: { fontSize: 9, fontWeight: '900', color: TEXT_MUTED, letterSpacing: 1.5, marginBottom: 4 },
     inlineError: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingLeft: 12 },
@@ -503,7 +506,7 @@ const styles = StyleSheet.create({
     actionBtnPrimary: { marginBottom: 16, height: 48, borderRadius: 12, backgroundColor: GOLD, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, gap: 12 },
     actionBtnPrimaryText: { fontSize: 13, fontWeight: '800', color: NAVY },
     actionBtn: { height: 48, borderRadius: 12, backgroundColor: 'rgba(251,113,133,0.05)', borderWidth: 1, borderColor: 'rgba(251,113,133,0.15)', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, gap: 12 },
-    logoutText: { fontSize: 13, fontWeight: '700', color: '#fb7185' },
+    logoutText: { fontSize: 13, fontWeight: '700', color: '#BA1A1A' },
     footerInfo: { alignItems: 'center', gap: 8 },
     memberSince: { fontSize: 10, fontWeight: '900', color: TEXT_MUTED, letterSpacing: 2 },
     versionText: { fontSize: 9, fontWeight: '600', color: TEXT_MUTED, opacity: 0.5 },

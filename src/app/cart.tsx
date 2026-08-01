@@ -274,10 +274,10 @@ export default function CartScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
 
             <LinearGradient
-                colors={[NAVY, B2B.NAVY_MID, '#111D35']}
+                colors={[NAVY, NAVY, NAVY, NAVY]}
                 locations={[0, 0.5, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -328,7 +328,7 @@ export default function CartScreen() {
                                 <View style={styles.itemInfo}>
                                     <View style={styles.itemHeader}>
                                         <View style={{ flex: 1 }}>
-                                            <Text style={styles.itemName} numberOfLines={1}>{item.product?.name || 'Unknown Product'}</Text>
+                                            <Text style={styles.itemName} numberOfLines={1}>{item?.product?.name?.toLowerCase() || 'Unknown Product'}</Text>
                                             <Text style={styles.itemRef}>DESIGN NO. {item.product?.designNumber || 'N/A'}</Text>
                                             <Text style={styles.itemRef}>TAG NO. {item.product?.tagNumber || 'N/A'}</Text>
                                         </View>
@@ -419,7 +419,7 @@ export default function CartScreen() {
                 </View>
             </ScrollView>
 
-            <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 24) }]}>
+            <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom + 20, 24) }]}>
                 <TouchableOpacity
                     style={[styles.submitButton, (submitting || cartItems.length === 0) && { opacity: 0.7 }]}
                     onPress={handleSubmitOrder}
@@ -511,7 +511,7 @@ export default function CartScreen() {
 
                             {!!tpinError && (
                                 <View style={tpinStyles.errorRow}>
-                                    <Icon name="error-outline" size={16} color="#fb7185" />
+                                    <Icon name="error-outline" size={16} color="#BA1A1A" />
                                     <Text style={tpinStyles.errorText}>{tpinError}</Text>
                                 </View>
                             )}
@@ -684,6 +684,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: TEXT_PRIMARY,
         marginBottom: 4,
+        textTransform: 'capitalize'
     },
     itemRef: {
         fontSize: 11,
@@ -910,7 +911,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderTopWidth: 1,
         borderTopColor: NAVY_BORDER,
-        backgroundColor: 'rgba(11,18,32,0.95)',
+        backgroundColor: 'white',
     },
     submitButton: {
         height: 52,
@@ -1039,7 +1040,7 @@ const tpinStyles = StyleSheet.create({
     },
     errorText: {
         fontSize: 13,
-        color: '#fb7185',
+        color: '#BA1A1A',
         fontWeight: '600',
     },
     actionBtn: {

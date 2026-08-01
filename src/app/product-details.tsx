@@ -247,10 +247,10 @@ export default function ProductDetailsScreen() {
 
     return (
         <View style={[styles.container, { paddingBottom: insets.bottom + 20 }]}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
 
             <LinearGradient
-                colors={[NAVY, NAVY_MID, '#09101d']}
+                colors={[NAVY, NAVY, NAVY, NAVY]}
                 style={styles.background}
             />
 
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
         borderColor: NAVY_BORDER,
         overflow: 'hidden',
         elevation: 10,
-        shadowColor: '#000',
+        shadowColor: '#1C1B1B',
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.4,
         shadowRadius: 20,
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 16,
         right: 16,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.2)',
         width: 36,
         height: 36,
         borderRadius: 10,
@@ -603,8 +603,8 @@ const styles = StyleSheet.create({
     refLabel: { fontSize: 7, fontWeight: '900', color: GOLD, letterSpacing: 1, marginBottom: 2 },
     refText: { fontSize: 9, fontWeight: '600', color: TEXT_MUTED, letterSpacing: 1 },
     stockStatus: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8 },
-    pulse: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#10b981' },
-    stockLabel: { fontSize: 10, fontWeight: '900', color: '#10b981', letterSpacing: 1 },
+    pulse: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#765A13' },
+    stockLabel: { fontSize: 10, fontWeight: '900', color: '#765A13', letterSpacing: 1 },
     specSection: { paddingHorizontal: 20, marginTop: 16 },
     sectionLabel: { fontSize: 10, fontWeight: '900', color: GOLD, letterSpacing: 2, marginBottom: 12, marginLeft: 5 },
     specGrid: { flexDirection: 'row', gap: 10, marginBottom: 12 },
@@ -681,7 +681,7 @@ const styles = StyleSheet.create({
     barShadow: { position: 'absolute', top: -100, left: 0, right: 0, height: 100 },
     actionBar: {
         flexDirection: 'row',
-        backgroundColor: 'rgba(11,18,32,0.98)',
+        backgroundColor: 'white',
         borderRadius: 16,
         padding: 8,
         borderWidth: 1,

@@ -163,10 +163,10 @@ export default function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
 
             <LinearGradient
-                colors={[NAVY, NAVY_MID, '#09101d']}
+                colors={[NAVY, NAVY, NAVY, NAVY]}
                 style={styles.background}
             />
 
@@ -221,7 +221,7 @@ export default function HomeScreen() {
                                         fadeDuration={0}
                                     />
                                     <LinearGradient
-                                        colors={['transparent', 'rgba(11,18,32,0.95)']}
+                                        colors={['transparent', 'rgba(11,18,32,0.2)']}
                                         style={styles.heroOverlay}
                                     >
                                         <View style={styles.tagBadge}>
@@ -301,7 +301,7 @@ export default function HomeScreen() {
                                     <LinearGradient
                                         colors={active
                                             ? ['transparent', 'rgba(199,155,57,0.72)', 'rgba(199,155,57,0.95)']
-                                            : ['transparent', 'rgba(11,18,32,0)', 'rgba(11,18,32,0.3)']}
+                                            : ['transparent', 'rgba(11,18,32,0)', 'rgba(11,18,32,0.1)']}
                                         style={styles.catGradient}
                                     />
 
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     background: { ...StyleSheet.absoluteFillObject },
     header: {
         // height: 110,
-        backgroundColor: 'rgba(11,18,32,0.95)',
+        backgroundColor: 'white',
         borderBottomWidth: 1,
         borderColor: NAVY_BORDER,
         paddingHorizontal: 20,
@@ -460,16 +460,16 @@ const styles = StyleSheet.create({
     portalSubtitle: { fontSize: 8, fontWeight: '700', color: TEXT_MUTED, letterSpacing: 1 },
     headerActions: { flexDirection: 'row', gap: 10 },
     headerIconBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: NAVY_CARD, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER },
-    badge: { position: 'absolute', top: 10, right: 10, width: 8, height: 8, borderRadius: 4, backgroundColor: '#ef4444', borderWidth: 1, borderColor: NAVY },
+    badge: { position: 'absolute', top: 10, right: 10, width: 8, height: 8, borderRadius: 4, backgroundColor: '#BA1A1A', borderWidth: 1, borderColor: NAVY },
     scrollContent: { paddingTop: 20, paddingBottom: 120, },
     heroContainer: { marginBottom: 30, paddingHorizontal: 20 },
-    heroCard: { height: 220, borderRadius: 30, overflow: 'hidden', backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, elevation: 12 },
+    heroCard: { height: 220, borderRadius: 30, overflow: 'hidden', backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER },
     heroImage: { ...StyleSheet.absoluteFillObject },
     heroOverlay: { ...StyleSheet.absoluteFillObject, justifyContent: 'flex-end', padding: 25 },
-    tagBadge: { backgroundColor: 'rgba(232,201,122,0.2)', alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, marginBottom: 10, borderWidth: 0.5, borderColor: GOLD },
-    tagText: { color: GOLD, fontSize: 8, fontWeight: '900', letterSpacing: 1 },
-    heroTitle: { color: TEXT_PRIMARY, fontSize: 24, fontWeight: '300', lineHeight: 30 },
-    heroSubtitle: { color: GOLD_LIGHT, fontSize: 10, fontWeight: '800', letterSpacing: 1.5, marginTop: 5 },
+    tagBadge: { backgroundColor: 'rgba(232,201,122,0.5)', alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, marginBottom: 10, borderWidth: 0.5, borderColor: GOLD },
+    tagText: { color: '#fff', fontSize: 8, fontWeight: '500', letterSpacing: 1 },
+    heroTitle: { color: '#fff', fontSize: 24, fontWeight: '300', lineHeight: 30 },
+    heroSubtitle: { color: '#fff', fontSize: 10, fontWeight: '800', letterSpacing: 1.5, marginTop: 5 },
     indicatorContainer: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 15 },
     indicator: { width: 6, height: 2, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 1 },
     indicatorActive: { width: 20, backgroundColor: GOLD },
@@ -481,15 +481,15 @@ const styles = StyleSheet.create({
     sectionUnderline: { width: 28, height: 2, backgroundColor: GOLD, borderRadius: 1, marginTop: 4 },
     exploreAllBtn: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: GOLD_BORDER, backgroundColor: 'rgba(199,155,57,0.08)' },
     exploreAllText: { fontSize: 9, fontWeight: '900', color: GOLD, letterSpacing: 1.5 },
-    catCard: { width: 120, height: 140, borderRadius: 22, overflow: 'hidden', marginRight: 0, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, elevation: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.35, shadowRadius: 10 },
-    catCardActive: { borderColor: GOLD, elevation: 18, shadowColor: GOLD, shadowOpacity: 0.45, shadowRadius: 14 },
+    catCard: { width: 120, height: 140, borderRadius: 22, overflow: 'hidden', marginRight: 0, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, },
+    catCardActive: { borderColor: GOLD, elevation: 18 },
     catBgImage: { ...StyleSheet.absoluteFillObject },
     catBgPlaceholder: { ...StyleSheet.absoluteFillObject, backgroundColor: NAVY_CARD, justifyContent: 'center', alignItems: 'center' },
     catGradient: { ...StyleSheet.absoluteFillObject },
     catCountBadge: { position: 'absolute', top: 10, right: 10, backgroundColor: 'rgba(11,18,32,0.75)', borderRadius: 10, paddingHorizontal: 7, paddingVertical: 3, borderWidth: 0.5, borderColor: GOLD_BORDER },
     catCountText: { fontSize: 9, fontWeight: '900', color: GOLD, letterSpacing: 0.5 },
     catFooter: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 12, gap: 3 },
-    catName: { fontSize: 13, fontWeight: '800', color: TEXT_PRIMARY, letterSpacing: 0.3, textTransform: 'capitalize' },
+    catName: { fontSize: 13, fontWeight: '800', color: '#fff', letterSpacing: 0.3, textTransform: 'capitalize' },
     catShopNow: { fontSize: 9, fontWeight: '900', color: GOLD, letterSpacing: 1.5 },
     catActiveBorder: { ...StyleSheet.absoluteFillObject, borderRadius: 22, borderWidth: 2, borderColor: GOLD },
     categoryScroll: { paddingHorizontal: 20, gap: 12 },
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
     compactProductCard: { width: 160, backgroundColor: NAVY_CARD, borderRadius: 24, padding: 10, borderWidth: 1, borderColor: NAVY_BORDER },
     productImgWrapper: { width: '100%', aspectRatio: 1, borderRadius: 18, overflow: 'hidden', backgroundColor: NAVY_INPUT },
     productImg: { ...StyleSheet.absoluteFillObject },
-    favBtn: { position: 'absolute', top: 8, right: 8, width: 30, height: 30, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
+    favBtn: { position: 'absolute', top: 8, right: 8, width: 30, height: 30, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.1)', justifyContent: 'center', alignItems: 'center' },
     productBrief: { paddingTop: 10, paddingBottom: 4, gap: 6 },
     productTitle: { fontSize: 13, fontWeight: '300', color: TEXT_PRIMARY, paddingHorizontal: 5, textTransform: 'capitalize' },
     weightBadge: {
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     historyTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     historyTitle: { fontSize: 14, fontWeight: '600', color: TEXT_PRIMARY, textTransform: 'capitalize', flexShrink: 1 },
     historyCatBadge: { backgroundColor: 'rgba(99,102,241,0.1)', borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2, borderWidth: 0.5, borderColor: 'rgba(99,102,241,0.3)' },
-    historyCatText: { fontSize: 8, fontWeight: '900', color: '#818cf8', letterSpacing: 0.5 },
+    historyCatText: { fontSize: 8, fontWeight: '900', color: '#B29146', letterSpacing: 0.5 },
     historySpecRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
     historySpecPill: {
         flexDirection: 'row',

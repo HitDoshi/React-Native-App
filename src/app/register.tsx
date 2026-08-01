@@ -19,17 +19,17 @@ import Icon, { IconName } from '../components/Icon';
 import { authService } from '../services/authService';
 import MessageModal from '../components/MessageModal';
 
-// Design tokens — same palette as Login
-const GOLD = '#C9A84C';
-const GOLD_LIGHT = '#E8C97A';
-const NAVY = '#0B1220';
-const NAVY_CARD = '#162040';
-const NAVY_INPUT = '#1C2A4A';
-const NAVY_BORDER = '#2A3F6A';
-const TEXT_PRIMARY = '#F0EAD6';
-const TEXT_MUTED = '#8899BB';
-const ERROR_COLOR = '#F87171';
-const SUCCESS_COLOR = '#34D399';
+import { B2B } from '../constants/Colors';
+
+const {
+    GOLD, GOLD_LIGHT, GOLD_DARK,
+    NAVY, NAVY_CARD, NAVY_INPUT, NAVY_BORDER,
+    TEXT_PRIMARY, TEXT_MUTED
+} = B2B;
+
+const ERROR_COLOR = B2B.ERROR;
+const SUCCESS_COLOR = '#10b981'; // Standard success green
+
 
 type FormData = {
     fullName: string;
@@ -246,8 +246,14 @@ export default function RegisterScreen() {
             if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
                 const serverFieldErrors: FormErrors = {};
                 error.response.data.errors.forEach((err: any) => {
-                    if (err.path && err.msg) {
-                        serverFieldErrors[err.path as keyof FormData] = err.msg;
+                    const field = err.path || err.field;
+                    const msg = err.msg || err.message;
+                    if (field && msg) {
+                        if (serverFieldErrors[field as keyof FormData]) {
+                            serverFieldErrors[field as keyof FormData] += `\n${msg}`;
+                        } else {
+                            serverFieldErrors[field as keyof FormData] = msg;
+                        }
                     }
                 });
                 if (Object.keys(serverFieldErrors).length > 0) {
@@ -257,7 +263,7 @@ export default function RegisterScreen() {
                 }
             }
 
-            const message = error.response?.data?.message || 'Registration failed. Please try again.';
+            const message = error.response?.data?.message || error.response?.data?.error || error.response?.data?.msg || error.message || 'Registration failed. Please try again.';
             setServerError(message);
             triggerShake();
         }
@@ -265,10 +271,10 @@ export default function RegisterScreen() {
 
     return (
         <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor={NAVY} />
+            <StatusBar barStyle="dark-content" backgroundColor={NAVY} />
 
             <LinearGradient
-                colors={[NAVY, '#0D1628', '#111D35']}
+                colors={[NAVY, NAVY, NAVY, NAVY]}
                 locations={[0, 0.5, 1]}
                 style={styles.background}
                 start={{ x: 0, y: 0 }}
@@ -301,6 +307,7 @@ export default function RegisterScreen() {
             </View>
 
             <KeyboardAwareScreen
+                style={{ flex: 1 }}
                 contentContainerStyle={styles.scrollContent}
             >
                 {/* Intro */}
@@ -562,7 +569,7 @@ const styles = StyleSheet.create({
         backgroundColor: NAVY_CARD,
         borderRadius: 20, borderWidth: 1, borderColor: NAVY_BORDER,
         padding: 24, gap: 0,
-        shadowColor: '#000', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.35, shadowRadius: 24, elevation: 10,
+        shadowColor: '#1C1B1B', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.35, shadowRadius: 24, elevation: 10,
     },
 
     // Error banner

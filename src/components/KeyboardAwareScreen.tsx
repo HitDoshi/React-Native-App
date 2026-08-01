@@ -138,7 +138,7 @@ export default function KeyboardAwareScreen({
         </KeyboardAvoidingView>
     );
 
-    if (!dismissOnTap) {
+    if (!dismissOnTap || scrollable) {
         return content;
     }
 
