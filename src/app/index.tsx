@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Animated,
+    Image,
 } from 'react-native';
 import KeyboardAwareScreen from '../components/KeyboardAwareScreen';
 import { LinearGradient } from 'react-native-linear-gradient';
@@ -138,14 +139,11 @@ export default function LoginScreen() {
 
                     <View style={styles.brandSection}>
                         <View style={styles.logoRing}>
-                            <LinearGradient
-                                colors={[GOLD_DARK, GOLD, GOLD_LIGHT]}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.logoGradient}
-                            >
-                                <Icon name="diamond" size={28} color={NAVY} />
-                            </LinearGradient>
+                            <Image
+                                source={require('../../assets/images/logo.png')}
+                                style={styles.logoImage}
+                                resizeMode="contain"
+                            />
                         </View>
                         <Text style={styles.brandName}>SV GOLD</Text>
                         <Text style={styles.brandTagline}>WHOLESALE PARTNER PORTAL</Text>
@@ -317,17 +315,18 @@ const styles = StyleSheet.create({
     scrollContent: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 20, paddingVertical: 32 },
     contentContainer: { width: '100%', maxWidth: 440, alignSelf: 'center' },
 
-    brandSection: { alignItems: 'center', marginBottom: 32 },
+    brandSection: { alignItems: 'center', marginBottom: 24 },
     logoRing: {
-        width: 72, height: 72, borderRadius: 36,
+        width: 90, height: 90, borderRadius: 45,
         borderWidth: 2, borderColor: GOLD,
+        backgroundColor: '#22333b',
         padding: 3, marginBottom: 16,
+        justifyContent: 'center', alignItems: 'center',
         shadowColor: GOLD, shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.5, shadowRadius: 16,
     },
-    logoGradient: { flex: 1, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
+    logoImage: { width: 170, height: 170 },
     brandName: { fontSize: 28, fontWeight: '800', color: GOLD, letterSpacing: 4 },
     brandTagline: { fontSize: 10, fontWeight: '700', color: TEXT_MUTED, letterSpacing: 2.5, marginTop: 4, textTransform: 'uppercase' },
-
     card: {
         backgroundColor: NAVY_CARD,
         borderRadius: 32,

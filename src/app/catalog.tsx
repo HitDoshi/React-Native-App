@@ -42,7 +42,12 @@ export default function CatalogScreen() {
     const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isSearchMode, setIsSearchMode] = useState(false);
+    const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { cartCount, updateCartCount } = useCart();
 
     const [showRefine, setShowRefine] = useState(false);
@@ -59,11 +64,21 @@ export default function CatalogScreen() {
     sortRef.current = { sortBy, sortOrder };
     const weightRef = useRef({ minWeight, maxWeight });
     weightRef.current = { minWeight, maxWeight };
+    const isFetchingRef = useRef(false);
 
-    const fetchProducts = useCallback(async (filterId: string | null) => {
+    const fetchProducts = useCallback(async (filterId: string | null, page: number = 1) => {
+        if (isFetchingRef.current) return;
+        isFetchingRef.current = true;
         try {
-            setLoading(true);
-            const params: any = { sortBy: sortRef.current.sortBy, sortOrder: sortRef.current.sortOrder };
+            if (page === 1) setLoading(true);
+            else setLoadingMore(true);
+
+            const params: any = {
+                sortBy: sortRef.current.sortBy,
+                sortOrder: sortRef.current.sortOrder,
+                page,
+                limit: 20,
+            };
             if (filterId) params.category = filterId;
 
             // Weight range — only send if user has entered a value
@@ -73,13 +88,24 @@ export default function CatalogScreen() {
             if (!isNaN(maxVal) && maxVal > 0) params.maxNetWt = maxVal;
 
             const res = await productService.getProducts(params);
-            const products = res.data.data.products || [];
-            setFilteredProducts(products);
+            const resData = res.data.data;
+            const products = resData.products || [];
+            const pages = resData.totalPages ?? resData.pagination?.totalPages ?? 1;
+
+            setTotalPages(pages);
+            setCurrentPage(page);
+            if (page === 1) {
+                setFilteredProducts(products);
+            } else {
+                setFilteredProducts(prev => [...prev, ...products]);
+            }
         } catch (error) {
             console.error('Error fetching products:', error);
-            setFilteredProducts([]);
+            if (page === 1) setFilteredProducts([]);
         } finally {
             setLoading(false);
+            setLoadingMore(false);
+            isFetchingRef.current = false;
         }
     }, []);
     useFocusEffect(
@@ -92,7 +118,7 @@ export default function CatalogScreen() {
             setActiveFilterId(catId);
             setActiveFilter(catName);
             console.log("catId", catId);
-            fetchProducts(catId);
+            fetchProducts(catId, 1);
         }, [categoryId, sortBy, sortOrder])
     );
 
@@ -117,7 +143,46 @@ export default function CatalogScreen() {
         if (activeFilter !== filterName) {
             setActiveFilter(filterName);
             setActiveFilterId(filterId);
-            fetchProducts(filterId);
+            fetchProducts(filterId, 1);
+        }
+    };
+
+    const handleLoadMore = () => {
+        if (!loadingMore && !loading && currentPage < totalPages) {
+            if (isSearchMode && searchQuery.trim()) {
+                handleSearchPage(currentPage + 1);
+            } else {
+                fetchProducts(activeFilterId, currentPage + 1);
+            }
+        }
+    };
+
+    const handleSearchPage = async (page: number = 1) => {
+        if (!searchQuery.trim()) return;
+        if (isFetchingRef.current) return;
+        isFetchingRef.current = true;
+        try {
+            if (page === 1) setLoading(true);
+            else setLoadingMore(true);
+            setCurrentPage(page);
+            const res = await productService.getProducts({ search: searchQuery.trim(), limit: 20, page });
+            const resData = res.data.data;
+            const products = resData.products || [];
+            const pages = resData.totalPages ?? resData.pagination?.totalPages ?? 1;
+            setTotalPages(pages);
+            setCurrentPage(page);
+            if (page === 1) {
+                setFilteredProducts(products);
+            } else {
+                setFilteredProducts(prev => [...prev, ...products]);
+            }
+        } catch (error: any) {
+            console.error('Error searching products:', error);
+            if (page === 1) setFilteredProducts([]);
+        } finally {
+            setLoading(false);
+            setLoadingMore(false);
+            isFetchingRef.current = false;
         }
     };
 
@@ -153,7 +218,7 @@ export default function CatalogScreen() {
     const handleApplyRefine = () => {
         setShowRefine(false);
         // weightRef is already synced via state; re-fetch with current filterId
-        fetchProducts(activeFilterId);
+        fetchProducts(activeFilterId, 1);
     };
 
     const handleResetFilters = () => {
@@ -163,18 +228,31 @@ export default function CatalogScreen() {
         setMaxWeight('');
     };
 
-    const handleSearch = async () => {
+    const handleSearch = () => {
         if (!searchQuery.trim()) return;
-        try {
-            setLoading(true);
-            const res = await productService.getProducts({ search: searchQuery });
-            const products = res.data.data.products || [];
-            setFilteredProducts(products);
-        } catch (error: any) {
-            console.error('Error searching products:', error);
-        } finally {
-            setLoading(false);
+        setIsSearchMode(true);
+        handleSearchPage(1);
+    };
+
+    const handleClearSearch = () => {
+        setSearchQuery('');
+        setIsSearchMode(false);
+        if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+        fetchProducts(activeFilterId, 1);
+    };
+
+    const handleSearchTextChange = (text: string) => {
+        setSearchQuery(text);
+        if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+        if (!text.trim()) {
+            setIsSearchMode(false);
+            fetchProducts(activeFilterId, 1);
+            return;
         }
+        searchDebounceRef.current = setTimeout(() => {
+            setIsSearchMode(true);
+            handleSearchPage(1);
+        }, 500);
     };
 
     const renderProduct = ({ item }: { item: any }) => (
@@ -252,10 +330,15 @@ export default function CatalogScreen() {
                             placeholder="Search masterpiece..."
                             placeholderTextColor={TEXT_MUTED}
                             value={searchQuery}
-                            onChangeText={setSearchQuery}
+                            onChangeText={handleSearchTextChange}
                             onSubmitEditing={handleSearch}
                             returnKeyType="search"
                         />
+                        {searchQuery.length > 0 && (
+                            <TouchableOpacity onPress={handleClearSearch} style={styles.clearBtn}>
+                                <Icon name="close" size={16} color={TEXT_MUTED} />
+                            </TouchableOpacity>
+                        )}
                     </View>
                     <TouchableOpacity style={styles.refineBtn} onPress={() => setShowRefine(true)}>
                         <Icon name="tune" size={20} color={GOLD} />
@@ -281,29 +364,51 @@ export default function CatalogScreen() {
                 </ScrollView>
             </View>
 
-            <FlatList
-                data={filteredProducts}
-                renderItem={renderProduct}
-                keyExtractor={item => (item._id || item.id || '').toString()}
-                numColumns={2}
-                contentContainerStyle={[styles.listContent, { paddingBottom: 100 }]}
-                columnWrapperStyle={styles.columnWrapper}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="handled"
-                keyboardDismissMode="on-drag"
-                ListHeaderComponent={
-                    <View style={styles.listHeader}>
-                        <Text style={styles.resultsCount}>{filteredProducts.length} DESIGNS FOUND</Text>
-                        <View style={styles.headerLine} />
-                    </View>
-                }
-                ListEmptyComponent={
-                    <View style={styles.emptyState}>
-                        <Icon name="search-off" size={60} color={NAVY_BORDER} />
-                        <Text style={styles.emptyText}>No matches found</Text>
-                    </View>
-                }
-            />
+            {loading ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size="large" color={GOLD} />
+                </View>
+            ) : (
+                <FlatList
+                    data={filteredProducts}
+                    renderItem={renderProduct}
+                    keyExtractor={item => (item._id || item.id || '').toString()}
+                    numColumns={2}
+                    contentContainerStyle={[styles.listContent, { paddingBottom: 100 }]}
+                    columnWrapperStyle={styles.columnWrapper}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    keyboardDismissMode="on-drag"
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.4}
+                    ListHeaderComponent={
+                        <View style={styles.listHeader}>
+                            <Text style={styles.resultsCount}>{filteredProducts.length} DESIGNS LOADED</Text>
+                            <View style={styles.headerLine} />
+                        </View>
+                    }
+                    ListEmptyComponent={
+                        <View style={styles.emptyState}>
+                            <Icon name="search-off" size={60} color={NAVY_BORDER} />
+                            <Text style={styles.emptyText}>No matches found</Text>
+                        </View>
+                    }
+                    ListFooterComponent={
+                        loadingMore ? (
+                            <View style={{ paddingVertical: 20, alignItems: 'center' }}>
+                                <ActivityIndicator size="small" color={GOLD} />
+                                <Text style={{ color: TEXT_MUTED, fontSize: 11, marginTop: 6, fontWeight: '600' }}>Loading more...</Text>
+                            </View>
+                        ) : currentPage < totalPages ? (
+                            <View style={{ paddingVertical: 16, alignItems: 'center' }}>
+                                <Text style={{ color: TEXT_MUTED, fontSize: 11, fontWeight: '600' }}>Scroll for more</Text>
+                            </View>
+                        ) : filteredProducts.length > 0 ? (
+                            <></>
+                        ) : null
+                    }
+                />
+            )}
 
             <BottomNav activeTab="Catalog" />
 
@@ -417,6 +522,7 @@ const styles = StyleSheet.create({
     searchWrap: { flexDirection: 'row', gap: 10, paddingHorizontal: 20, marginTop: 15 },
     searchBar: { flex: 1, height: 48, borderRadius: 14, backgroundColor: NAVY_INPUT, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, borderWidth: 1, borderColor: NAVY_BORDER },
     searchInput: { flex: 1, marginLeft: 10, color: TEXT_PRIMARY, fontSize: 14, fontWeight: '500' },
+    clearBtn: { padding: 4, marginLeft: 4 },
     refineBtn: { width: 48, height: 48, borderRadius: 14, backgroundColor: NAVY_CARD, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: NAVY_BORDER },
     filterScroll: { paddingHorizontal: 20, gap: 10, marginTop: 15 },
     filterPill: { paddingHorizontal: 18, height: 34, borderRadius: 12, backgroundColor: NAVY_CARD, borderWidth: 1, borderColor: NAVY_BORDER, justifyContent: 'center', alignItems: 'center' },

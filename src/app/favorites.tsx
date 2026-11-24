@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
     StyleSheet,
     Text,
@@ -32,7 +32,11 @@ export default function FavoritesScreen() {
     const insets = useSafeAreaInsets();
     const [favorites, setFavorites] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [addingToCart, setAddingToCart] = useState<string | null>(null);
+    const isFetchingRef = useRef(false);
 
     const [modalConfig, setModalConfig] = useState<{
         visible: boolean;
@@ -51,12 +55,23 @@ export default function FavoritesScreen() {
 
     const { updateCartCount } = useCart();
 
-    const fetchFavorites = async () => {
+    const fetchFavorites = async (page: number = 1) => {
+        if (isFetchingRef.current) return;
+        isFetchingRef.current = true;
         try {
-            setLoading(true);
-            const res = await favoriteService.getFavorites();
+            if (page === 1) setLoading(true);
+            else setLoadingMore(true);
+            const res = await favoriteService.getFavorites({ page, limit: 20 });
             if (res.success) {
-                setFavorites(res.data || []);
+                const items = res.data || [];
+                const pages = res.totalPages ?? res.pagination?.totalPages ?? 1;
+                setTotalPages(pages);
+                setCurrentPage(page);
+                if (page === 1) {
+                    setFavorites(items);
+                } else {
+                    setFavorites(prev => [...prev, ...items]);
+                }
             }
         } catch (error: any) {
             console.error('Error fetching favorites:', error);
@@ -64,13 +79,21 @@ export default function FavoritesScreen() {
             setModalConfig({ visible: true, title: 'Error', message: msg, type: 'error' });
         } finally {
             setLoading(false);
+            setLoadingMore(false);
+            isFetchingRef.current = false;
+        }
+    };
+
+    const handleLoadMore = () => {
+        if (!loadingMore && !loading && currentPage < totalPages) {
+            fetchFavorites(currentPage + 1);
         }
     };
 
     useFocusEffect(
         useCallback(() => {
             updateCartCount();
-            fetchFavorites();
+            fetchFavorites(1);
         }, [])
     );
 
@@ -193,6 +216,22 @@ export default function FavoritesScreen() {
                     contentContainerStyle={styles.gridContent}
                     columnWrapperStyle={styles.gridColumn}
                     showsVerticalScrollIndicator={false}
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.4}
+                    ListFooterComponent={
+                        loadingMore ? (
+                            <View style={{ paddingVertical: 20, alignItems: 'center' }}>
+                                <ActivityIndicator size="small" color={GOLD} />
+                                <Text style={{ color: TEXT_MUTED, fontSize: 11, marginTop: 6, fontWeight: '600' }}>Loading more...</Text>
+                            </View>
+                        ) : currentPage < totalPages ? (
+                            <View style={{ paddingVertical: 16, alignItems: 'center' }}>
+                                <Text style={{ color: TEXT_MUTED, fontSize: 11, fontWeight: '600' }}>Scroll for more</Text>
+                            </View>
+                        ) : favorites.length > 0 ? (
+                            <></>
+                        ) : null
+                    }
                 />
             )}
 
